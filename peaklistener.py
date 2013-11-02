@@ -73,7 +73,7 @@ class PeakListener(object):
         """Internal method to handle a new chunk of audio from the mic.
            Should be called in its own thread to not block the input thread."""
         samples = get_shorts_from_bytes(data)     
-        energy = sum([abs(sample) for sample in samples]) / len(samples)
+        energy = audiotools.get_energy(samples) 
         time_since_last_peak = time() - self._last_peak_time            
         if self._is_high:
             # We're in a peak, so record off the latest audio.

@@ -1,5 +1,8 @@
 from cmath import exp, pi
 
+def get_energy(samples):
+    return sum([abs(sample) for sample in samples]) * 1.0 / len(samples)
+
 def get_energy_at_frequency(samples, frequency, sample_frequency):
     """Calculates the contribution of the given frequency to the overall energy
        of the sample. Takes the sample as a list of ints, the frequency whose

@@ -83,7 +83,7 @@ class PeakListener(object):
             time_since_last_peak > MIN_PEAK_DURATION):            
             # We're in a peak, but it's just ended. Handle the audio.
             self._is_high = False         
-            self._peak_data_handler(self._buffer[:]) 
+            self._peak_data_handler(self._buffer[:]) # Shallow copy
         elif (energy > self._high_pass and not self._is_high):
             # We weren't in a peak, but one just started. Begin recording.
             self._is_high = True

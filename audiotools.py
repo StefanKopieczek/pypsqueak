@@ -28,8 +28,8 @@ def get_energy_in_range(samples, low, high, sample_frequency, points=10):
     final_freq = int((high-low)* 1.0 / delta) * delta + low
     f2n = get_energy_at_frequency(samples, final_freq, sample_frequency)
     
-    approximation = (delta / 3.0) * 
-                       (f0 + 4 * odd_contribution + 2 * even_contribution + f2n)
+    approximation = ((delta / 3.0) * 
+                       (f0 + 4 * odd_contribution + 2 * even_contribution + f2n))
     return approximation
 
 def sft(a, k):

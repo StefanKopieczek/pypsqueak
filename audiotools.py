@@ -1,6 +1,10 @@
 from cmath import exp, pi
 
 def get_energy_at_frequency(samples, frequency, sample_frequency):
+    """Calculates the contribution of the given frequency to the overall energy
+       of the sample. Takes the sample as a list of ints, the frequency whose
+       contribution we wish to determine, and the frequency at which the given
+       samples were taken (in Hz)."""
     # Calculate the length of the sample in seconds.
     sample_duration = len(samples) * 1.0 / sample_frequency
 
@@ -14,24 +18,26 @@ def get_energy_at_frequency(samples, frequency, sample_frequency):
 def get_energy_in_range(samples, low, high, sample_frequency, points=10):
     """ Use Simpson's rule to approximate the integral of the fourier transform
         over the given range."""
-    # Hacky - fix!
+    # Horrendously hacky - fix!
     delta = int((high-low)*1.0/points)
     f0 = get_energy_at_frequency(samples, low, sample_frequency)
-    odd_contribution = sum((get_energy_at_frequency(samples, f, sample_frequency) for f in xrange(low + delta, high - delta, delta)))
-    even_contribution = sum((get_energy_at_frequency(samples, f, sample_frequency) for f in xrange(low + 2 * delta, high - delta, delta)))
+    odd_contribution = sum((get_energy_at_frequency(samples, f, sample_frequency) 
+                              for f in xrange(low + delta, high - delta, delta)))
+    even_contribution = sum((get_energy_at_frequency(samples, f, sample_frequency) 
+                              for f in xrange(low + 2 * delta, high - delta, delta)))
     final_freq = int((high-low)* 1.0 / delta) * delta + low
     f2n = get_energy_at_frequency(samples, final_freq, sample_frequency)
     
-    approximation = (delta / 3.0) * (f0 + 4 * odd_contribution + 2 * even_contribution + f2n)    
+    approximation = (delta / 3.0) * 
+                       (f0 + 4 * odd_contribution + 2 * even_contribution + f2n)
     return approximation
 
 def sft(a, k):
+    """Calculates the semidiscrete fourier transform of the array a at frequency
+       k, relative to the length of a."""
     result = 0
     N = len(a)
     for n in xrange(N):        
-        try:
-            result += a[n] * exp(2 * pi * 1j * k * n * 1.0 / N)
-        except IndexError:
-            print "%d/%d/%d" % (n, N, len(a))
+        result += a[n] * exp(2 * pi * 1j * k * n * 1.0 / N)
 
     return (1.0 / N) * result 

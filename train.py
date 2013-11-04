@@ -14,7 +14,7 @@ def save_and_quit(stats, fname):
 
 if __name__ == "__main__":
     fname = sys.argv[1]
-    training_set = list('abcdefghijklmnopqrstuvwxyz0123456789') * 1
+    training_set = list('abcdefghijklmnopqrstuvwxyz0123456789') * 3
     is_listening = True
     stats = []
     current_idx = 0
@@ -27,15 +27,17 @@ if __name__ == "__main__":
         if is_listening and len(samples) > 0: # Unsure why this is rqd, but it is.
             print "Got letter data."
             is_listening = False
-            stats.append({
-                'letter'    : training_set[current_idx],
-                'analysis'  : letterstats.analyse(samples, RATE)
-            })
-            print "Wrote stats."
-            current_idx += 1
-            if current_idx >= len(training_set):
-                save_and_quit(stats, fname) 
-            print "\nSay '%s'." % training_set[current_idx]
+            redo = (raw_input("OK? [Y/N] ")[0].lower() != 'y')
+            if not redo:
+                stats.append({
+                    'letter'    : training_set[current_idx],
+                    'analysis'  : letterstats.analyse(samples, RATE)
+                })
+                print "Wrote stats."
+                current_idx += 1
+                if current_idx >= len(training_set):
+                    save_and_quit(stats, fname) 
+            print "\nSay '%s' (%d/%d)." % (training_set[current_idx], current_idx, len(training_set))
             is_listening = True
         
     print "Say '%s'." % training_set[0]

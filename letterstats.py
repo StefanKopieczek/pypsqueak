@@ -30,7 +30,6 @@ def get_best_match(samples,
     counter = Counter([match[0] for match in best_matches])
     indices = {letterdata[0]:(k-revidx-1) 
                             for revidx, letterdata in enumerate(best_matches[::-1])}
-    print indices
     most_frequent_with_indices = {indices[key[0]]:key[0] 
                                                for key in counter.most_common()}
     return min(most_frequent_with_indices.iteritems())[1]

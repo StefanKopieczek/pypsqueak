@@ -32,7 +32,7 @@ class PeakListener(object):
        When a peak has ended, it calls the peak_data_handler it was given when
        constructed, passing the sample data as a list of ints."""
 
-    def __init__(self, peak_data_handler, low_pass=1100, high_pass=1400):        
+    def __init__(self, peak_data_handler, low_pass=800, high_pass=2500):        
         # Are we currently in a peak?
         self._is_high = False 
 

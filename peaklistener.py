@@ -10,7 +10,7 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
 MIN_PEAK_DURATION = 0.500
-DEBUG = True 
+DEBUG = False 
 
 def _dprint(text):
     global DEBUG

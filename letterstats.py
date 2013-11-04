@@ -5,28 +5,35 @@ from math import sqrt
 BANDS = [(40,   1000, 'LOW'),
          (1000, 4000, 'MEDIUM'),
          (4000, 20000, 'HIGH')]
+DEBUG = True 
+
+def _dprint(text):
+    global DEBUG
+    if DEBUG: print text + '\n'
          
 def get_best_match(samples, 
                    sample_frequency, 
                    training_stats, 
-                   rejection_threshold=None,
+                   rejection_threshold=None, # Todo
                    k=3):
     fingerprint = analyse(samples, sample_frequency)
 
     # Get k nearest neighbours.
     best_matches = []
     for stat in training_stats:
-        best_matches.append((stat['letter'], _get_distance(stat, fingerprint)))
+        best_matches.append((stat['letter'], _get_distance(stat['analysis'], fingerprint)))
         best_matches.sort(key=lambda stat : stat[1])
-        best_matches = best_matches[:k] 
+        best_matches = best_matches[:k]
+    print best_matches 
 
     # Break ties by choosing closest neighbour.
     counter = Counter([match[0] for match in best_matches])
-    indices = {match[0]:(k-revidx) 
-                            for revidx, letter in enumerate(best_matches[::-1])}
-    most_frequent_with_indices = {indices[key]:key 
+    indices = {letterdata[0]:(k-revidx-1) 
+                            for revidx, letterdata in enumerate(best_matches[::-1])}
+    print indices
+    most_frequent_with_indices = {indices[key[0]]:key[0] 
                                                for key in counter.most_common()}
-    return min(most_frequent_indices.iteritems())[1]
+    return min(most_frequent_with_indices.iteritems())[1]
 
 def analyse(samples, sample_frequency):
     """Produces a data vector describing the characteristics of this sample.
@@ -37,9 +44,9 @@ def analyse(samples, sample_frequency):
     overall_energy = audiotools.get_energy(samples)
 
     analysis = [n]
-    print 'Analysing sample with length %d and energy %d' % (n, overall_energy)
+    _dprint('Analysing sample with length %d and energy %d' % (n, overall_energy))
     for ii in xrange(3):
-        print '\tParsing segment ' + str(ii)
+        _dprint('\tParsing segment ' + str(ii))
         analysis.extend(_analyse_segment(samples[int(ii*n/3.0):int((ii+1)*n/3.0)],
                                          sample_frequency,
                                          overall_energy))
@@ -52,7 +59,7 @@ def load_stats_from_file(fname):
     for line in f:
         data = line.strip().split()
         letter = data[0]
-        analysis = [float(datum) for datum in data]
+        analysis = [float(datum) for datum in data[1:]]
         stat = {'letter':letter, 'analysis':analysis}
         stats.append(stat)
     f.close()
@@ -61,20 +68,20 @@ def load_stats_from_file(fname):
 
 def save_stats_to_file(stats, fname):
     f = open(fname, 'w')
-    print "Saving to file."
+    _dprint("Saving to file.")
     for stat in stats:
         line = (stat['letter'] + ' ' + 
                 ' '.join([str(datum) for datum in stat['analysis']]) +
                 '\n')
         f.write(line)
-    print "Saved."
+    _dprint("Saved.")
     f.close()
 
 def _get_distance(v1, v2):
     """Calculate the Euclidean distance between two vectors."""
     if len(v1) != len(v2):
         raise ValueError("Cannot get distance between vectors of different " +
-                         "dimensions!")
+                         "dimensions: %d and %d!" % (len(v1), len(v2)))
     return sqrt(sum(((v1[idx]-v2[idx])**2 for idx in xrange(len(v1)))))
 
 def _get_predominant_band(samples, sample_frequency):
@@ -93,7 +100,7 @@ def _analyse_segment(samples, sample_frequency, overall_energy):
     energy = audiotools.get_energy(samples)
     analysis.append(energy * 1.0 / overall_energy)
     for band in BANDS:
-        print '\t\tAnalysing band ' + str(band)
+        _dprint('\t\tAnalysing band ' + str(band))
         band_energy = audiotools.get_energy_in_range(samples, 
                                                      band[0], 
                                                      band[1], 

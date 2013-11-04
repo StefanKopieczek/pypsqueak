@@ -1,3 +1,6 @@
+# I'm so sorry for writing this class. I was in a hurry and I didn't have time
+# to refactor the PeakListener to block properly. So much state and threadbadness!
+
 import letterstats
 import sys
 from peaklistener import PeakListener, RATE

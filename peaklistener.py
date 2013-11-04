@@ -10,6 +10,11 @@ FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
 MIN_PEAK_DURATION = 0.500
+DEBUG = True 
+
+def _dprint(text):
+    global DEBUG
+    if DEBUG: print text + '\n'
 
 def get_shorts_from_bytes(data):       
     """Converts a string of byte values into an array of (short) int values,
@@ -27,7 +32,8 @@ class PeakListener(object):
        When a peak has ended, it calls the peak_data_handler it was given when
        constructed, passing the sample data as a list of ints."""
 
-    def __init__(self, peak_data_handler, low_pass=700, high_pass=1300):        
+    def __init__(self, peak_data_handler, low_pass=1100, high_pass=1400):        
+        self._last_sample = [0] * 100
         # Are we currently in a peak?
         self._is_high = False 
 
@@ -42,7 +48,7 @@ class PeakListener(object):
 
         # The callback function to which we pass peak audio.
         self._peak_data_handler = peak_data_handler
-    
+
         # The value at which we consider a peak to have ended.
         # Will need tweaking for a given mic.
         self._low_pass = low_pass 
@@ -53,6 +59,7 @@ class PeakListener(object):
         
     def start(self):
         """Start listening to input."""
+        _dprint("Peak Listener starts.")
         self._mic_thread.start()
         
     def stop(self):
@@ -60,6 +67,7 @@ class PeakListener(object):
         self._mic_thread.stop()
         self._buffer = []
         self._last_peak_time = 0
+        _dprint("Peak Listener stopped.")
         
     def _handle_input(self, data):
         """Internal method to handle a new chunk of audio from the mic."""
@@ -82,10 +90,16 @@ class PeakListener(object):
             self._is_high and 
             time_since_last_peak > MIN_PEAK_DURATION):            
             # We're in a peak, but it's just ended. Handle the audio.
+            _dprint("Peak ends.")
             self._is_high = False         
             self._peak_data_handler(self._buffer[:]) # Shallow copy
+            if self._buffer[:100] == self._last_sample[:100]: print "CONSPIRACY!!!"
+            self._last_sample = self._buffer[:100]
+            self._buffer = []
         elif (energy > self._high_pass and not self._is_high):
+            print energy
             # We weren't in a peak, but one just started. Begin recording.
+            _dprint("Peak starts.")
             self._is_high = True
             last_peak_time = time()         
             self._buffer = []

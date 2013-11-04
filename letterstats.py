@@ -5,7 +5,7 @@ from math import sqrt
 BANDS = [(40,   1000, 'LOW'),
          (1000, 4000, 'MEDIUM'),
          (4000, 20000, 'HIGH')]
-DEBUG = True 
+DEBUG = False 
 
 def _dprint(text):
     global DEBUG

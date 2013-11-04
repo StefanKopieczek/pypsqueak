@@ -33,7 +33,6 @@ class PeakListener(object):
        constructed, passing the sample data as a list of ints."""
 
     def __init__(self, peak_data_handler, low_pass=1100, high_pass=1400):        
-        self._last_sample = [0] * 100
         # Are we currently in a peak?
         self._is_high = False 
 
@@ -93,11 +92,8 @@ class PeakListener(object):
             _dprint("Peak ends.")
             self._is_high = False         
             self._peak_data_handler(self._buffer[:]) # Shallow copy
-            if self._buffer[:100] == self._last_sample[:100]: print "CONSPIRACY!!!"
-            self._last_sample = self._buffer[:100]
             self._buffer = []
         elif (energy > self._high_pass and not self._is_high):
-            print energy
             # We weren't in a peak, but one just started. Begin recording.
             _dprint("Peak starts.")
             self._is_high = True

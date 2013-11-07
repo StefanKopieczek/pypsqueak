@@ -2,7 +2,7 @@ import pyaudio
 import struct
 import wave
 import threading
-from time import sleep, time
+from time import sleep, time # LOL FIONA ROX!!!1!1!!
 import audiotools, letterstats
 
 CHUNK = 1024 

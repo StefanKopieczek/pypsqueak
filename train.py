@@ -26,7 +26,8 @@ if __name__ == "__main__":
         if is_listening and len(samples) > 0:  # Unsure why this is rqd, but it is.
             print "Got letter data."
             is_listening = False
-            redo = (raw_input("OK? [Y/N] ")[0].lower() != 'y')
+            redo_input = raw_input("Hit n to retry")
+            redo = (redo_input > 0 and redo_input[0] == 'n')
             if not redo:
                 stats.append({
                     'letter'    : training_set[current_idx],
@@ -41,9 +42,13 @@ if __name__ == "__main__":
 
     print "Say '%s'." % training_set[0]
     listener = PeakListener(handle_peak)
-    listener.start()
+    try:
+        listener.start()
 
-    while True:
-        # Sit on listener thread.
-        # Hack - better to expose a 'join'.
-        sleep(0.1)
+        while True:
+            # Sit on listener thread.
+            # Hack - better to expose a 'join'.
+            sleep(0.1)
+
+    finally:
+        listener.stop()

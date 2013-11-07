@@ -40,7 +40,9 @@ def sft(a, k):
        k, relative to the length of a."""
     result = 0
     N = len(a)
-    for n in xrange(N):        
-        result += a[n] * exp(2 * pi * 1j * k * n * 1.0 / N)
-
-    return (1.0 / N) * result 
+    prec = 2 * pi * k * 1.0 *1j / N
+    acc = -prec
+    for n in xrange(N):
+        acc += prec
+        result += a[n] * exp(acc)
+    return result / N

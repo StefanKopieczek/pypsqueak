@@ -15,7 +15,7 @@ def get_best_match(samples,
                    sample_frequency,
                    training_stats,
                    rejection_threshold=None,  # Todo
-                   k=3):
+                   k=5):
     fingerprint = analyse(samples, sample_frequency)
 
     # Get k nearest neighbours.

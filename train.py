@@ -27,7 +27,7 @@ if __name__ == "__main__":
             print "Got letter data."
             is_listening = False
             redo_input = raw_input("Hit n to retry")
-            redo = (redo_input > 0 and redo_input[0] == 'n')
+            redo = (len(redo_input) > 0 and redo_input[0] == 'n')
             if not redo:
                 stats.append({
                     'letter'    : training_set[current_idx],

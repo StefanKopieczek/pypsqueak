@@ -15,7 +15,11 @@ if __name__ == "__main__":
         print "I think you said '%s'." % best_match 
     
     listener = PeakListener(handle_peak)
-    listener.start()
+    try:
+        listener.start()
 
-    while True:
-        sleep(0.1) # Horrendous hack - should expose a join.
+        while True:
+            sleep(0.1) # Horrendous hack - should expose a join.
+
+    finally:
+    	listener.stop()

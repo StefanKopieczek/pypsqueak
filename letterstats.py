@@ -92,6 +92,25 @@ def save_stats_to_file(stats, fname):
     _dprint("Saved.")
     f.close()
 
+def load_samples_from_file(stats, fname):
+    samples = []
+    with open(fname, 'r') as f:
+        data = line.strip().split()
+        letter = data[0]
+        letter_samples = [float(datum) for datum in data[1:]]
+        sample = {'letter': letter, 'samples': letter_samples}
+        samples.append(sample)
+
+    return samples
+
+def save_samples_to_file(stats, fname):
+    with open(fname, 'a') as f:
+        for stat in stats:
+            line = (stat['letter'] + ' ' +
+                    ' '.join([str(datum) for datum in stat['samples']]) +
+                    '\n')
+            f.write(line)
+
 def _get_distance(v1, v2):
     """Calculate the Euclidean distance between two vectors."""
     if len(v1) != len(v2):

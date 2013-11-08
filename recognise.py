@@ -32,6 +32,7 @@ if __name__ == "__main__":
         listener.stoplistening()
         output_file = open('output.num', "w")
         output_file.write('+'+dict[phrase][1:])
+        print ('calling +'+dict[phrase][1:])
         output_file.close()
 
     listener = speech.listenfor(list,response)

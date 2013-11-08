@@ -42,6 +42,7 @@ def get_best_match(samples,
     common_list = [(count[0], values[count[0]]) for count in counter.most_common()
                    if count[1] == counter.most_common(1)[0][1]]
     print common_list
+    return common_list[0][0]
 
     indices = {letterdata[0]:(k - revidx - 1)
                             for revidx, letterdata in enumerate(best_matches[::-1])}

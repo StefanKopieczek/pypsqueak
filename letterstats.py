@@ -82,7 +82,7 @@ def load_stats_from_file(fname):
     return stats
 
 def save_stats_to_file(stats, fname):
-    f = open(fname, 'a')
+    f = open(fname, 'w')
     _dprint("Saving to file.")
     for stat in stats:
         line = (stat['letter'] + ' ' +

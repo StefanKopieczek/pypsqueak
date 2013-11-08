@@ -2,14 +2,14 @@ import pyaudio
 import struct
 import wave
 import threading
-from time import sleep, time # LOL FIONA ROX!!!1!1!!
+from time import sleep, time  # LOL FIONA ROX!!!1!1!!
 import audiotools, letterstats
 
 CHUNK = 1024
 FORMAT = pyaudio.paInt16
 CHANNELS = 1
 RATE = 44100
-MIN_PEAK_DURATION = 0.500
+MIN_PEAK_DURATION = 0.800
 DEBUG = True
 
 def _dprint(text):

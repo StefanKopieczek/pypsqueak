@@ -31,8 +31,8 @@ if __name__ == "__main__":
         print("You said %s" % phrase)
         listener.stoplistening()
         output_file = open('output.num', "w")
-        output_file.write('+'+dict[phrase][1:])
-        print ('calling +'+dict[phrase][1:])
+        output_file.write('+'+dict[phrase])
+        print ('calling +'+dict[phrase])
         output_file.close()
 
     listener = speech.listenfor(list,response)

@@ -3,8 +3,8 @@ from collections import Counter
 from math import sqrt, log10
 
 BANDS = [(40, 1000, 'LOW'),
-         (1000, 4000, 'MEDIUM'),
-         (4000, 20000, 'HIGH')]
+         (1000, 3000, 'MEDIUM'),
+         (3000, 20000, 'HIGH')]
 DEBUG = False
 START_WEIGHT = 2
 
@@ -42,6 +42,8 @@ def get_best_match(samples,
     common_list = [(count[0], values[count[0]]) for count in counter.most_common()
                    if count[1] == counter.most_common(1)[0][1]]
     print common_list
+    avg = lambda x: sum(x[1])/len(x[1])
+    common_list.sort(cmp=lambda x, y: cmp(avg(x), avg(y)))
     return common_list[0][0]
 
     indices = {letterdata[0]:(k - revidx - 1)
@@ -82,7 +84,7 @@ def load_stats_from_file(fname):
     return stats
 
 def save_stats_to_file(stats, fname):
-    f = open(fname, 'w')
+    f = open(fname, 'a')
     _dprint("Saving to file.")
     for stat in stats:
         line = (stat['letter'] + ' ' +

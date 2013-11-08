@@ -1,10 +1,7 @@
-import letterstats
 import sys
-from peaklistener import PeakListener, RATE
 from time import sleep
 import time
 import speech
-prev_phrase = ''
 
 if __name__ == "__main__":
     # Handle a specific set of heard phrases with a callback.
@@ -25,14 +22,13 @@ if __name__ == "__main__":
     
     fname = sys.argv[1]
     dict, list = formdict(fname)
-    list.append('call')
     
     def response(phrase, listener):
         print("You said %s" % phrase)
         listener.stoplistening()
         output_file = open('output.num', "w")
         output_file.write('+'+dict[phrase])
-        print ('calling +'+dict[phrase])
+        print ('calling '+list[list.index(phrase)/2*2+1][5:])
         output_file.close()
 
     listener = speech.listenfor(list,response)

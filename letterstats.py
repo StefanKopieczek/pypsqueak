@@ -92,14 +92,15 @@ def save_stats_to_file(stats, fname):
     _dprint("Saved.")
     f.close()
 
-def load_samples_from_file(stats, fname):
+def load_samples_from_file(fname):
     samples = []
     with open(fname, 'r') as f:
-        data = line.strip().split()
-        letter = data[0]
-        letter_samples = [float(datum) for datum in data[1:]]
-        sample = {'letter': letter, 'samples': letter_samples}
-        samples.append(sample)
+        for line in f:
+            data = line.strip().split()
+            letter = data[0]
+            letter_samples = [float(datum) for datum in data[1:]]
+            sample = {'letter': letter, 'samples': letter_samples}
+            samples.append(sample)
 
     return samples
 

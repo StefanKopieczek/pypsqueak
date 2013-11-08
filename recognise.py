@@ -14,7 +14,7 @@ if __name__ == "__main__":
         """
         http://www.renuncln.com/blog/2012/05/28/python-speech-recognition-and-tts-part-i-pyspeech/
         """
-        spoken = speech.input("Processing input")
+        spoken = speech.input("Processing input", list('abcdefghijklmnopqrstuvwxyz0123456789'))
         print "I think you said '%s'." % spoken
         #print "Processing input"
         #best_match = letterstats.get_best_match(samples, RATE, stats) 
